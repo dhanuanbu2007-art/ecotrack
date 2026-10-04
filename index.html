@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Personal Carbon Footprint Calculator</title>
+    <meta name="description" content="Calculate your personal carbon footprint and get eco-friendly suggestions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <main class="dashboard">
+        <header class="header">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 16V12" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 8H12.01" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.93 4.93L19.07 19.07" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+                    <path d="M8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12Z" fill="#10b981" opacity="0.2"/>
+                    <path d="M12 12C12 12 10.5 9 8 9C5.5 9 6 12 6 12C6 15 9 17 12 20C15 17 18 15 18 12C18 12 18.5 9 16 9C13.5 9 12 12 12 12Z" fill="#10b981"/>
+                </svg>
+                <h1>EcoTrack</h1>
+            </div>
+            <p class="subtitle">Personal Carbon Footprint Calculator</p>
+        </header>
+
+        <div class="content-grid">
+            <!-- Input Form Section -->
+            <section class="card input-section">
+                <h2>Your Daily Activities</h2>
+                <form id="calculator-form">
+                    <div class="form-group">
+                        <label for="distance">Daily Travel Distance (km)</label>
+                        <input type="number" id="distance" min="0" step="0.1" placeholder="e.g. 15" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transport">Transportation Type</label>
+                        <div class="select-wrapper">
+                            <select id="transport" required>
+                                <option value="" disabled selected>Select transport</option>
+                                <option value="car">Car (Petrol/Diesel)</option>
+                                <option value="bus">Public Bus</option>
+                                <option value="train">Train / Subway</option>
+                                <option value="ev">Electric Vehicle</option>
+                                <option value="bike">Bicycle / Walking</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="electricity">Monthly Electricity (kWh)</label>
+                        <input type="number" id="electricity" min="0" step="1" placeholder="e.g. 250" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="food">Dietary Habit</label>
+                        <div class="select-wrapper">
+                            <select id="food" required>
+                                <option value="" disabled selected>Select diet</option>
+                                <option value="heavy-meat">Heavy Meat Eater</option>
+                                <option value="omnivore">Average Omnivore</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Calculate Footprint</button>
+                    <p class="disclaimer">Note: Calculations are estimates for educational purposes only.</p>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-section" id="results-section" style="display: none;">
+                <h2>Your Annual Carbon Footprint</h2>
+                
+                <div class="total-emission">
+                    <span id="total-co2" class="counter">0</span>
+                    <span class="unit">kg CO₂e / year</span>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Emissions Breakdown</h3>
+                    <div class="bar-chart">
+                        <div class="bar-group">
+                            <div class="bar travel-bar" id="bar-travel"></div>
+                            <span class="bar-label">Travel</span>
+                            <span class="bar-value" id="val-travel">0%</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar electricity-bar" id="bar-electricity"></div>
+                            <span class="bar-label">Home</span>
+                            <span class="bar-value" id="val-electricity">0%</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar food-bar" id="bar-food"></div>
+                            <span class="bar-label">Food</span>
+                            <span class="bar-value" id="val-food">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="suggestions" id="suggestions-box">
+                    <h3>Eco-Friendly Suggestions</h3>
+                    <ul id="suggestions-list">
+                        <!-- Suggestions will be injected here -->
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- History Section -->
+            <section class="card history-section">
+                <h2>Calculation History</h2>
+                <div class="history-list" id="history-list">
+                    <p class="empty-state">No past calculations found.</p>
+                </div>
+                <button id="clear-history" class="btn-secondary" style="display: none;">Clear History</button>
+            </section>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
